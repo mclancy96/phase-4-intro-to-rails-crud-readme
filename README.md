@@ -1,21 +1,35 @@
 # CRUD with Controllers in Rails
 
-CRUD stands for **Create, Read, Update, Delete**—the four basic operations for managing data in a web application. Rails makes it easy to implement these operations using controllers, models, and views.
+## Introduction & Context
+
+If you’re new to web frameworks, it’s important to understand how Rails organizes your code. Rails uses the MVC pattern—Model, View, Controller—to separate concerns in your application:
+
+- **Model:** Handles data and business logic (e.g., database records).
+- **View:** Handles what the user sees (HTML, templates).
+- **Controller:** Handles user input, interacts with models, and renders views.
+
+The controller is the “traffic director” of your app. When a user makes a request (like clicking a link or submitting a form), the controller decides what to do: it might fetch data from the model, update the database, or render a view for the user to see. Controllers are where most of your app’s logic for handling requests lives.
 
 ---
 
+
 ## What is CRUD?
+
+Before we dive into the code, let’s clarify what CRUD means:
 
 - **Create:** Add new records to the database (e.g., a new article or user)
 - **Read:** Retrieve and display records (e.g., show a list of articles or a single article)
 - **Update:** Modify existing records (e.g., edit an article)
 - **Delete:** Remove records from the database (e.g., delete an article)
 
+These four operations are the foundation of most web applications. Rails makes it easy to implement CRUD using controllers, models, and views.
+
 ---
+
 
 ## How Rails Controllers Implement CRUD
 
-In Rails, a typical resource (like `Article`) will have a controller with seven RESTful actions:
+Now that you know what CRUD is, let’s see how Rails puts it into practice. In Rails, a typical resource (like `Article`) will have a controller with seven RESTful actions:
 
 | Action   | HTTP Verb | Path                | Purpose                |
 |----------|-----------|---------------------|------------------------|
@@ -27,17 +41,22 @@ In Rails, a typical resource (like `Article`) will have a controller with seven 
 | update   | PATCH/PUT | /articles/:id       | Update an article      |
 | destroy  | DELETE    | /articles/:id       | Delete an article      |
 
-Rails can generate all of these for you with:
+
+Rails can generate the routes and controller for you with these commands:
 
 ```sh
-bin/rails generate scaffold Article title:string body:text
-```
+# Generate RESTful routes for articles
+rails generate resources Article
 
+# Or, to just generate a controller (you'll add actions manually):
+rails generate controller Articles
+```
+The `resources` generator sets up all the standard CRUD routes in your `config/routes.rb`, while the `controller` generator creates a controller file where you can define the actions yourself.
 ---
 
 ## Example: ArticlesController (Manual Implementation)
 
-Below is a typical controller for managing articles, with explanations for each action:
+Let’s look at what a controller actually looks like in code. Below is a typical controller for managing articles, with explanations for each action:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -100,9 +119,12 @@ class ArticlesController < ApplicationController
 end
 ```
 
+
 ---
 
 ## Example: Views for CRUD
+
+Now that you’ve seen how a controller handles each CRUD action, let’s look at how the data gets displayed to the user. In Rails, each controller action typically has a corresponding view file. These views are written in Embedded Ruby (ERB) and are responsible for generating the HTML that the browser displays. Here are some examples of what the views for the `ArticlesController` might look like:
 
 **index.html.erb**
 ```erb
@@ -224,8 +246,6 @@ And use them in the view:
 - Use descriptive names for clarity (`@article`, `@articles`, `@user`).
 - Avoid setting instance variables in filters/callbacks unless necessary.
 - Prefer using instance variables over global or class variables for passing data to views.
-
----
 
 ---
 
